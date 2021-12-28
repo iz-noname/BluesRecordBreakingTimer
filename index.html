@@ -1,0 +1,42 @@
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Rekord Bluesa</title>
+        <link rel="stylesheet" href="resources/styles.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    </head>
+    <body>
+        <div id="main">
+            <div id="center">Gramy już</div>
+            <div id="stopwatch">
+                00h 00m 00s
+            </div>
+            <ul id="buttons">
+                <li><button onclick="showMenu()"><i id="menu-arrow" class="material-icons">keyboard_arrow_right</i></button></li>
+                <li><button class="play-pause-reset" onclick="startStopwatch()"><i class="material-icons">play_arrow</i> Start</button></li>
+                <li><button class="play-pause-reset" onclick="stopStopwatch()"><i class="material-icons">pause</i> Pause</button></li>
+                <li><button class="play-pause-reset" onclick="resetStopwatch()"><i class="material-icons">refresh</i> Reset</button></li>
+            </ul>
+        </div>
+        <div id="time-left">
+            <p>Do pobicia rekordu pozostało:&nbsp&nbsp</p>
+            <div id="countdown">
+                30h 00m 00s
+            </div>
+        </div>
+        <!-- <div id="logo">
+            <img src="BSMB-logotyp-250px.png" alt="Białostockie Stowarzyszenie Miłośników Bluesa">
+        </div>
+         -->
+        <footer>
+            <img src="resources/images/patronat-1.png" class="footer-logos w3-animate-right">
+            <img src="resources/images/sponsorzy-1.png" class="footer-logos w3-animate-right">
+            <p>© Izabela Saniewska</p>
+        </footer>
+        <script src="resources/main.js"></script>
+    </body>
+</html>
