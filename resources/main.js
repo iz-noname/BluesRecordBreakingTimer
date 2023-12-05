@@ -1,109 +1,87 @@
 const stopwatch = document.getElementById('stopwatch');
 const countdown = document.getElementById('countdown');
 
-let stopwatchHours = 0;
-let stopwatchMinutes = 0;
-let stopwatchSeconds = 0;
 let stoptime = true;
+let startTime, tInterval, updatedTime, difference;
 
-let countdownHours = 30;
-let countdownMinutes = 0;
-let countdownSeconds = 0;
+function getTimeRemaining(endtime) {
+  const total = Date.parse(endtime) - Date.parse(new Date());
+  const seconds = Math.floor((total / 1000) % 60);
+  const minutes = Math.floor((total / 1000 / 60) % 60);
+  const hours = Math.floor(total / (1000 * 60 * 60));
+
+  return {
+    total,
+    seconds,
+    minutes,
+    hours
+  };
+}
+
+function getTimeStopwatch() {
+  updatedTime = new Date().getTime();
+  difference = updatedTime - startTime;
+  const seconds = Math.floor(difference / 1000) % 60 + 1;
+  const minutes = Math.floor(difference / 1000 / 60) % 60;
+  const hours = Math.floor(difference / 1000 / 60 / 60);
+
+  return {
+    difference,
+    seconds,
+    minutes,
+    hours
+  };
+}
+
+function addHours(numOfHours, date = new Date()) {
+  date.setTime(date.getTime() + numOfHours * 60 * 60 * 1000);
+  return date;
+}
 
 function startStopwatch() {
-  if (stoptime == true) {
-        stoptime = false;
-        StopwatchCycle();
-    }
-}
-function stopStopwatch() {
-  if (stoptime == false) {
-    stoptime = true;
-  }
-}
+  if (stoptime) {
+    const deadline = addHours(32);
+    startTime = new Date().getTime();
 
-function StopwatchCycle() {
-  if (stoptime == false) {
-    stopwatchSeconds = parseInt(stopwatchSeconds);
-    stopwatchMinutes = parseInt(stopwatchMinutes);
-    stopwatchHours = parseInt(stopwatchHours);
-
-    stopwatchSeconds = stopwatchSeconds + 1;
-    
-
-    if (countdownHours != 0 || countdownMinutes != 0 || countdownSeconds != 0) {
-      countdownSeconds = countdownSeconds - 1;
+    function updateStopwatch() {
+      const t = getTimeStopwatch();
+      stopwatch.innerHTML = ('0' + t.hours).slice(-2) + 'h ' 
+                          + ('0' + t.minutes).slice(-2) + 'm ' 
+                          + ('0' + t.seconds).slice(-2) + 's ';
     }
 
-    if (stopwatchSeconds == 60) {
-      stopwatchMinutes = stopwatchMinutes + 1;
-      stopwatchSeconds = 0;
-    }
-    if (stopwatchMinutes == 60) {
-      stopwatchHours = stopwatchHours + 1;
-      stopwatchMinutes = 0;
-      stopwatchSeconds = 0;
-    }
-    if (countdownSeconds == -1 && countdownMinutes >= 0) {
-      countdownMinutes = countdownMinutes - 1;
-      countdownSeconds = 59;
-    }
-    if (countdownMinutes == -1 && countdownHours >= 0) {
-      countdownHours = countdownHours - 1;
-      countdownMinutes = 59;
-      countdownSeconds = 59;
-    }
-
-
-    if (stopwatchSeconds < 10 || stopwatchSeconds == 0) {
-      stopwatchSeconds = '0' + stopwatchSeconds;
-    }
-    if (stopwatchMinutes < 10 || stopwatchMinutes == 0) {
-      stopwatchMinutes = '0' + stopwatchMinutes;
-    }
-    if (stopwatchHours < 10 || stopwatchHours == 0) {
-      stopwatchHours = '0' + stopwatchHours;
-    }
-
-    if (countdownSeconds !== '0' && (countdownSeconds < 10 || countdownSeconds == 0)) {
-      countdownSeconds = '0' + countdownSeconds;
-    }
-    if (countdownMinutes.toString(2).charAt(0) !== '0' && (countdownMinutes < 10 || countdownMinutes == 0)) {
-      countdownMinutes = '0' + countdownMinutes;
-    }
-    if (countdownHours.toString(2).charAt(0) !== '0' && (countdownHours < 10 || countdownHours == 0)) {
-      countdownHours = '0' + countdownHours;
-    }
-    
-    if (countdownHours == 0 && countdownMinutes == 0 && countdownSeconds == 0) {
-      countdown.style.color = "green";
-    }
-
-    stopwatch.innerHTML = stopwatchHours + 'h ' + stopwatchMinutes + 'm ' + stopwatchSeconds + 's';
-    countdown.innerHTML = countdownHours + 'h ' + countdownMinutes + 'm ' + countdownSeconds + 's';
-
-    setTimeout("StopwatchCycle()", 1000);
+    function updateClock() {
+      const t = getTimeRemaining(deadline);
+      countdown.innerHTML = ('0' + t.hours).slice(-2) + 'h ' 
+                          + ('0' + t.minutes).slice(-2) + 'm ' 
+                          + ('0' + t.seconds).slice(-2) + 's ';
+      if (t.total <= 0) {
+        clearInterval(timeIntervalClock);
+        countdown.innerHTML = "00h 00m 00s";
+      }
+    };
+    updateStopwatch();
+    updateClock();
+    tInterval = setInterval(updateStopwatch, 1);
+    const timeIntervalClock = setInterval(updateClock, 1);
   }
 }
 
 function resetStopwatch() {
-    stopwatch.innerHTML = "00h 00m 00s";
-    countdown.innerHTML = "30h 00m 00s";
+  stopwatch.innerHTML = "00h 00m 00s";
+  countdown.innerHTML = "32h 00m 00s";
 
-    stoptime = true;
-    stopwatchHours = 0;
-    stopwatchMinutes = 0;
-    stopwatchSeconds = 0;
-
-    countdownHours = 30;
-    countdownMinutes = 0;
-    countdownSeconds = 0;
+  stoptime = false;
+  clearInterval(tInterval);
+  clearInterval(timeIntervalClock);
+  difference = 0;
 }
 
+// SHOW MENU
 function showMenu() {
   let menuButtons = document.getElementsByClassName("play-pause-reset");
   let showMenuArrow = document.getElementById("menu-arrow");
-  for(let i = 0; i < menuButtons.length; i++) {
+  for (let i = 0; i < menuButtons.length; i++) {
     if (menuButtons[i].style.display === "none") {
       menuButtons[i].style.display = "block";
       showMenuArrow.innerText = "keyboard_arrow_left";
@@ -116,6 +94,7 @@ function showMenu() {
   }
 }
 
+// SPONSORS CAROUSEL
 let slideIndex = 0;
 carousel();
 function carousel() {
