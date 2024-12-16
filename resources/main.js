@@ -1,5 +1,6 @@
 const stopwatch = document.getElementById('stopwatch');
 const countdown = document.getElementById('countdown');
+const topNumberOfHours = 33;
 
 let stoptime = true;
 let startTime, tInterval, updatedTime, difference;
@@ -21,7 +22,7 @@ function getTimeRemaining(endtime) {
 function getTimeStopwatch() {
   updatedTime = new Date().getTime();
   difference = updatedTime - startTime;
-  const seconds = Math.floor(difference / 1000) % 60 + 1;
+  const seconds = Math.floor(difference / 1000) % 60;
   const minutes = Math.floor(difference / 1000 / 60) % 60;
   const hours = Math.floor(difference / 1000 / 60 / 60);
 
@@ -40,7 +41,7 @@ function addHours(numOfHours, date = new Date()) {
 
 function startStopwatch() {
   if (stoptime) {
-    const deadline = addHours(32);
+    const deadline = addHours(topNumberOfHours);
     startTime = new Date().getTime();
 
     function updateStopwatch() {
@@ -69,7 +70,7 @@ function startStopwatch() {
 
 function resetStopwatch() {
   stopwatch.innerHTML = "00h 00m 00s";
-  countdown.innerHTML = "32h 00m 00s";
+  countdown.innerHTML = "33h 00m 00s";
 
   stoptime = false;
   clearInterval(tInterval);

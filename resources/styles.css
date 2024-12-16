@@ -85,7 +85,7 @@ footer {
     bottom: 0;
     height: 250px;
     width: 100%;
-    background-color: #ffffff;
+    background-color: #fff;
 }
 
 footer p {
@@ -98,4 +98,5 @@ footer p {
 
 .footer-logos {
     width: 100%;
+    top: 0;
 }
